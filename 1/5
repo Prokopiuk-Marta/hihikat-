@@ -1,0 +1,22 @@
+#Хуйня якась а не задача (потім)
+k = int(input())
+counts = {}
+
+for _ in range(k): #Не проєби УМОВУ!!!!
+    bug = input()
+    if bug in counts:
+        counts[bug] += 1
+    else:
+        counts[bug] = 1
+
+max_count = 0
+for bug in counts:
+    if counts[bug] > max_count:
+        max_count = counts[bug]
+candidates = []
+for bug in counts:
+    if counts[bug] == max_count:
+        candidates.append(bug)
+candidates.sort()
+print(candidates[0])
+# }{ixixat
