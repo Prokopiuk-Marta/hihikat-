@@ -1,5 +1,4 @@
 import sys
-
 sys.setrecursionlimit(10 ** 6)
 line = input().split()
 v = int(line[0])
