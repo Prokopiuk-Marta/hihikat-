@@ -1,0 +1,23 @@
+n = int(input())
+acts = []
+for _ in range(n):
+    line = input().split()
+    acts.append([int(line[0]), int(line[1]), line[2]])
+
+def sort_key(act):
+    return act[1]
+acts.sort(key=sort_key)
+
+selected = []
+last_end = -1
+for act in acts:
+    s = act[0]
+    e = act[1]
+    title = act[2]
+    if s >= last_end:
+        selected.append(title)
+        last_end = e
+
+print(len(selected))
+for title in selected:
+    print(title)
