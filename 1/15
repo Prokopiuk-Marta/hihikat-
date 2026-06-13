@@ -1,0 +1,25 @@
+def merge(anya, katya):
+    merged = []
+    i = j = 0
+    while i < len(anya) and j < len(katya):
+        if anya[i] <= katya[j]:
+            merged.append(anya[i])
+            i += 1
+        else:
+            merged.append(katya[j])
+            j += 1
+
+    while i < len(anya):
+        merged.append(anya[i])
+        i += 1
+
+    while j < len(katya):
+        merged.append(katya[j])
+        j += 1
+    return merged
+
+    
+anya = [1,3,5,7,9,11,13,15,17,19]
+katya = [2,4,6,8,10,12,14,16,18,20]
+result = merge(anya, katya)
+print(result)
