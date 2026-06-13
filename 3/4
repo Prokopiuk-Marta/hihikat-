@@ -1,5 +1,4 @@
 import heapq
-
 line = input().split()
 v = int(line[0])
 e = int(line[1])
