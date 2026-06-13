@@ -1,10 +1,42 @@
-a,b = map(int, input().split())
-matrix = [list(map(int, input().split())) for _ in range(a)]
-summa_st = [sum(students) for students in matrix]
-krashiy = summa_st.index(max(summa_st)) + 1
-print(krashiy)
-for i in zip(*matrix):
-    if sum(i) ==0:
-        print(1)
-    else:
-        print(0)
+line = input().split()
+n = int(line[0])
+m = int(line[1])
+
+matrix = []
+for _ in range(n):
+    row_strings = input().split()
+    row = []
+    for val in row_strings:
+        row.append(int(val))
+    matrix.append(row)
+best_student = -1
+max_attendance = -1
+for i in range(n):
+    attendance = 0
+    for val in matrix[i]:
+        attendance += val
+    if attendance > max_attendance:
+        max_attendance = attendance
+        best_student = i + 1
+ghost_pairs = 0
+for j in range(m):
+    attended = False
+    for i in range(n):
+        if matrix[i][j] == 1:
+            attended = True
+            break
+    if not attended:
+        ghost_pairs += 1
+    #───▐▀▄──────▄▀▌───▄▄▄▄▄▄▄
+    #───▌▒▒▀▄▄▄▄▀▒▒▐▄▀▀▒██▒██▒▀▀▄    (lucky cat_Х3)
+    #──▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄
+    #──▌▒▒▒▒▒▒▒▒▒▒▒▒▒▄▒▒▒▒▒▒▒▒▒▒▒▒▒▀▄
+    #▀█▒▒█▌▒▒█▒▒▐█▒▒▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▌
+    #▀▌▒▒▒▒▒▀▒▀▒▒▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▐ ▄▄
+    #▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄█▒█
+    #▐▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒█▀
+    #──▐▄▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▄▌
+    #────▀▄▄▀▀▀▀▄▄▀▀▀▀▀▀▄▄▀▀▀▀▀▀▄▄▀
+
+print(best_student)
+print(ghost_pairs)
