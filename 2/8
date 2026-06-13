@@ -1,0 +1,45 @@
+import sys
+def rahui_i_zlyv(arr, l, m, r):
+    res = 0
+    a = 0
+    j = 0
+    k = l
+    n1 = m - l + 1
+    n2 = r - m
+    left = arr[l:m + 1]
+    right = arr[m + 1:r + 1]
+
+    while a < n1 and j < n2:
+        if left[a] <= right[j]:
+            arr[k] = left[a]
+            a += 1
+        else:
+            arr[k] = right[j]
+            j += 1
+            res += (n1 - a)
+        k += 1
+
+    while a < n1:
+        arr[k] = left[a]
+        a += 1
+        k += 1
+    while j < n2:
+        arr[k] = right[j]
+        j += 1
+        k += 1
+    return res
+
+
+def rahyi(arr, l, r):
+    res = 0
+    if l < r:
+        m = (r + l) // 2
+        res += rahyi(arr, l, m)
+        res += rahyi(arr, m + 1, r)
+        res += rahui_i_zlyv(arr, l, m, r)
+    return res
+
+
+n = int(input("Enter a number: "))
+arr = list(map(int, sys.stdin.readline().strip().split()))
+print(rahyi(arr, 0, len(arr) - 1))
