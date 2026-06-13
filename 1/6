@@ -1,6 +1,10 @@
-a = input ("enter a string: ")
-b = a.lower()
-if b == b.strip().split()[::-1]:
-    print ("yes")
+a = input()
+clean_a = ""
+for char in a:
+    if char.isalpha() or char.isdigit():
+        clean_a += char.lower()
+
+if clean_a == clean_a[::-1]:
+    print("YES")
 else:
-    print ("no")
+    print("NO")
