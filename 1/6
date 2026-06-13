@@ -1,0 +1,6 @@
+a = input ("enter a string: ")
+b = a.lower()
+if b == b.strip().split()[::-1]:
+    print ("yes")
+else:
+    print ("no")
