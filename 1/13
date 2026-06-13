@@ -1,0 +1,38 @@
+n = int(input())
+line = input().split()
+arr = []
+for x in line:
+    arr.append(int(x))
+arr.sort()
+
+min_val = arr[0]
+max_val = arr[n - 1]
+
+sum_val = 0
+for x in arr:
+    sum_val += x
+avg = sum_val / n
+above = 0
+for x in arr:
+    if x > avg:
+        above += 1
+if n % 2 != 0:
+    med = str(arr[n // 2])
+else:
+    v1 = arr[n // 2 - 1]
+    v2 = arr[n // 2]
+    s = v1 + v2
+    if s % 2 == 0:
+        med = str(s // 2)
+    else:
+        med = str(s) + "/2"
+
+print("ПІДРАХУВАЛО:")
+print("min: " + str(min_val))
+print("max: " + str(max_val))
+print("median: " + med)
+print("above average: " + str(above))
+
+#Test^
+#5
+#70 90 60 80 100
