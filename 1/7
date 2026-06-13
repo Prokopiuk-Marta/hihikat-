@@ -1,0 +1,10 @@
+a,b = map(int, input().split())
+matrix = [list(map(int, input().split())) for _ in range(a)]
+summa_st = [sum(students) for students in matrix]
+krashiy = summa_st.index(max(summa_st)) + 1
+print(krashiy)
+for i in zip(*matrix):
+    if sum(i) ==0:
+        print(1)
+    else:
+        print(0)
