@@ -1,0 +1,16 @@
+m = int(input())
+data = {}
+
+for _ in range(m):
+    line = input().split()
+    name = line[0]
+    amount = int(line[1])
+    if name not in data:
+        data[name] = [0, 0]
+    data[name][0] += 1
+    data[name][1] += amount
+sorted_names = list(data.keys())
+sorted_names.sort()
+
+for name in sorted_names:
+    print(name + " " + str(data[name][0]) + " " + str(data[name][1]))
