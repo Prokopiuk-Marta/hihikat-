@@ -1,0 +1,35 @@
+from collections import defaultdict, deque
+
+v, e = map(int, input().split())
+adj = defaultdict(list)
+for _ in range(e):
+    u, vv = map(int, input().split())
+    adj[u].append(vv); adj[vv].append(u)
+
+color = {}
+bipartite = True
+
+for i in range(1, v + 1):
+    if i not in color:
+        color[i] = 0
+        q = deque([i])
+        while q:
+            curr = q.popleft()
+            for nxt in adj[curr]:
+                if nxt not in color:
+                    color[nxt] = 1 - color[curr]
+                    q.append(nxt)
+                elif color[nxt] == color[curr]:
+                    bipartite = False
+                    break
+            if not bipartite: 
+                break
+    if not bipartite: 
+        break
+
+if not bipartite:
+    print("NO")
+else:
+    print("YES")
+    print(" ".join(str(n) for n in sorted(color) if color[n] == 0))
+    print(" ".join(str(n) for n in sorted(color) if color[n] == 1))
