@@ -1,0 +1,22 @@
+Демонстрація коду 
+micro caesar.asm
+
+Шифрування з числом 7
+rm -f caesar
+nasm -f elf64 caesar.asm -o caesar.o
+ld caesar.o -o caesar
+
+echo "Hello NaUKMA 2026! Secret: 987" > test.txt
+cat test.txt
+Hello NaUKMA 2026! Secret: 987
+
+./caesar test.txt enc.txt 7
+
+cat enc.txt
+
+
+
+Дешифрування з прикладом числа 7
+./caesar enc.txt dec.txt 123
+
+cat dec.txt
