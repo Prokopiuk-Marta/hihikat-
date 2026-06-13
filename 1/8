@@ -1,0 +1,226 @@
+section .data
+    err_args db "Usage: ./caesar <input_file> <output_file> <shift>", 10
+    err_args_len equ $ - err_args
+    
+    err_in db "Error: Cannot open input file (does it exist?)", 10
+    err_in_len equ $ - err_in
+    
+    err_out db "Error: Cannot create/open output file", 10
+    err_out_len equ $ - err_out
+
+    err_shift db "Error: Invalid shift value (must be a positive number)", 10
+    err_shift_len equ $ - err_shift
+    
+    msg_done db "File successfully encrypted!", 10
+    msg_done_len equ $ - msg_done
+
+section .bss
+    buffer resb 4096      
+
+section .text
+    global _start
+
+_start:
+    pop r12               
+    cmp r12, 4            
+    jne .print_usage      
+
+    pop r13               
+    pop r14               
+    pop r15               
+    pop rbx               
+
+    mov rdi, rbx
+    call atoi
+    cmp rax, 0            
+    jl .error_shift
+
+    mov rbx, rax          
+    xor rdx, rdx          
+    mov rcx, 26
+    div rcx               
+    mov r8, rdx           
+
+    mov rax, rbx          
+    xor rdx, rdx
+    mov rcx, 10
+    div rcx
+    mov r9, rdx           
+
+    mov rax, 2            
+    mov rdi, r14          
+    mov rsi, 0            
+    mov rdx, 0            
+    syscall
+    cmp rax, 0            
+    jl .error_in
+    mov r12, rax          
+
+    mov rax, 2            
+    mov rdi, r15          
+    mov rsi, 577          
+    mov rdx, 420          
+    syscall
+    cmp rax, 0
+    jl .error_out
+    mov r13, rax          
+
+.read_loop:
+    mov rax, 0            
+    mov rdi, r12          
+    mov rsi, buffer       
+    mov rdx, 4096         
+    syscall
+    
+    cmp rax, 0            
+    je .close_files       
+    jl .close_files       
+    
+    mov r14, rax          
+
+    mov rdi, buffer       
+    mov rsi, r14          
+    mov rdx, r8           
+    mov rcx, r9           
+    call apply_caesar
+
+    mov rax, 1            
+    mov rdi, r13          
+    mov rsi, buffer       
+    mov rdx, r14          
+    syscall
+
+    jmp .read_loop        
+
+.close_files:
+    mov rax, 3            
+    mov rdi, r12          
+    syscall
+    mov rax, 3            
+    mov rdi, r13          
+    syscall
+
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, msg_done
+    mov rdx, msg_done_len
+    syscall
+    jmp .exit
+
+.print_usage:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, err_args
+    mov rdx, err_args_len
+    syscall
+    jmp .exit_err
+.error_in:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, err_in
+    mov rdx, err_in_len
+    syscall
+    jmp .exit_err
+.error_out:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, err_out
+    mov rdx, err_out_len
+    syscall
+    jmp .exit_err
+.error_shift:
+    mov rax, 1
+    mov rdi, 1
+    mov rsi, err_shift
+    mov rdx, err_shift_len
+    syscall
+.exit_err:
+    mov rax, 60
+    mov rdi, 1            
+    syscall
+.exit:
+    mov rax, 60
+    mov rdi, 0            
+    syscall
+
+atoi:
+    xor rax, rax
+    xor r11, r11
+.atoi_loop:
+    movzx r11, byte [rdi]
+    cmp r11, 0
+    je .atoi_done
+    cmp r11, '0'
+    jl .atoi_err          
+    cmp r11, '9'
+    jg .atoi_err          
+    sub r11, '0'
+    imul rax, 10
+    add rax, r11
+    inc rdi
+    jmp .atoi_loop
+.atoi_err:
+    mov rax, -1
+.atoi_done:
+    ret
+
+apply_caesar:
+    cmp rsi, 0
+    jle .done_caesar
+    xor r10, r10                 
+    
+.caesar_loop:
+    cmp r10, rsi                 
+    jge .done_caesar
+    
+    movzx rax, byte [rdi + r10]  
+    
+    cmp rax, '0'
+    jl .check_upper
+    cmp rax, '9'
+    jg .check_upper
+    sub rax, '0'
+    add rax, rcx                 
+    cmp rax, 10
+    jl .apply_digit
+    sub rax, 10                  
+.apply_digit:
+    add rax, '0'
+    mov byte [rdi + r10], al
+    jmp .next_char
+
+.check_upper:
+    cmp rax, 'A'
+    jl .check_lower
+    cmp rax, 'Z'
+    jg .check_lower
+    sub rax, 'A'
+    add rax, rdx                 
+    cmp rax, 26
+    jl .apply_upper
+    sub rax, 26                  
+.apply_upper:
+    add rax, 'A'
+    mov byte [rdi + r10], al
+    jmp .next_char
+
+.check_lower:
+    cmp rax, 'a'
+    jl .next_char
+    cmp rax, 'z'
+    jg .next_char
+    sub rax, 'a'
+    add rax, rdx                 
+    cmp rax, 26
+    jl .apply_lower
+    sub rax, 26                  
+.apply_lower:
+    add rax, 'a'
+    mov byte [rdi + r10], al
+
+.next_char:
+    inc r10                      
+    jmp .caesar_loop
+    
+.done_caesar:
+    ret
