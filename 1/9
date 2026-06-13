@@ -1,10 +1,10 @@
 n = int(input())
-tasks = []
+taski = []
 for _ in range(n):
     line = input().split()
     task_name = line[0]
     deadline = int(line[1])
-    tasks.append((deadline, task_name))
-tasks.sort()
-for item in tasks:
+    taski.append((deadline, task_name))
+taski.sort()
+for item in taski:
     print(str(item[0]) + " " + item[1])
