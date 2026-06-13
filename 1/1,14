@@ -1,0 +1,11 @@
+shoto = input().split()
+a = int(shoto[0])
+b = int(shoto[1])
+
+for i in range (a):
+    for j in range (b):
+        if (i + j) % 2 == 0:
+            print("#", end = "")
+        else:
+            print(".", end = "")
+    print()
