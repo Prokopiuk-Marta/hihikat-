@@ -1,11 +1,11 @@
-l = int(input())
+chislo = int(input())
 ips = set()
 
-for _ in range(l):
+for _ in range(chislo):
     ip = input()
     ips.add(ip)
 print(len(ips))
 if len(ips) > 1000:
-    print("ALERT")#АЛАРМ
+    print("ALERT!!!")#АЛАРМ
 else:
     print("OK")
