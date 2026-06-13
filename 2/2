@@ -1,0 +1,23 @@
+n = int(input())
+line = input().split()
+arr = []
+for x in line:
+    arr.append(int(x))
+q = int(input())
+for _ in range(q):
+    x = int(input())
+
+    left = 0
+    right = n - 1
+    result = -1
+    while left <= right:
+        mid = (left + right) // 2
+        if arr[mid] == x:
+            result = mid
+            right = mid - 1  
+        elif arr[mid] < x:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    print(result)
