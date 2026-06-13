@@ -1,0 +1,31 @@
+n = int(input())
+best_student = ""
+max_streak = -1
+
+for _ in range(n):
+    line = input().split()
+    if len(line) == 0:
+        continue
+    name = line[0]
+    seq = line[1]
+    current_streak = 0
+    local_max = 0
+    for char in seq:
+        if char == '1':
+            current_streak += 1
+            if current_streak > local_max:
+                local_max = current_streak
+        else:
+            current_streak = 0
+    if local_max > max_streak:
+        max_streak = local_max
+        best_student = name
+    elif local_max == max_streak:
+        if name < best_student:
+            best_student = name
+#Test67:
+#Виведіть ім'я студента з найдовшою безперервною серією та довжину цієї серії у форматі:
+#name length
+#Якщо кілька студентів мають однакову максимальну серію — вивести того, чиє ім'я менше лексикографічно
+
+print(best_student + " " + str(max_streak))
