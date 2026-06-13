@@ -1,1 +1,31 @@
+n = int(input())
+tree = {}
+names = {}
+root = 0
 
+for _ in range(n):
+    line = input().split()
+    node_id = int(line[0])
+    name = line[1]
+    parent = int(line[2])
+    names[node_id] = name
+    if parent not in tree:
+        tree[parent] = []
+    if node_id not in tree:
+        tree[node_id] = []
+    if parent == 0:
+        root = node_id
+    else:
+        tree[parent].append(node_id)
+
+def dfs(u, depth):
+    spaces = ""
+    for _ in range(depth):
+        spaces += "  "
+    print(spaces + names[u])
+    children = tree[u]
+    children.sort()
+    for child in children:
+        dfs(child, depth + 1)
+
+dfs(root, 0)
